@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Assignments/Assignments.iml" filepath="$PROJECT_DIR$/Assignments/Assignments.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ICS3U1.iml" filepath="$PROJECT_DIR$/ICS3U1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/unit1/unit1.iml" filepath="$PROJECT_DIR$/unit1/unit1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/unit1_workbook/unit1_workbook.iml" filepath="$PROJECT_DIR$/unit1_workbook/unit1_workbook.iml" />
+      <module fileurl="file://$PROJECT_DIR$/unit2/unit2.iml" filepath="$PROJECT_DIR$/unit2/unit2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/unit2_workbook/unit2_workbook.iml" filepath="$PROJECT_DIR$/unit2_workbook/unit2_workbook.iml" />
+      <module fileurl="file://$PROJECT_DIR$/unit3/unit3.iml" filepath="$PROJECT_DIR$/unit3/unit3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/unit3_workbook/unit3_workbook.iml" filepath="$PROJECT_DIR$/unit3_workbook/unit3_workbook.iml" />
+    </modules>
+  </component>
+</project>
