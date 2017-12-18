@@ -1,6 +1,6 @@
 /*
 Keisun Wu
-11 November 2017
+9 November 2017
 
 Assignment #3 - Cipher
 
@@ -15,7 +15,8 @@ import java.util.*;
 public class Cipher {
 	private static final String ORIG = "AEIJOPRSTVX ";
 	private static final String SUBS = "@=!?*#&$+^%_";
-	private static final char LOWER = '1';
+	// Special character to indicate lower case character
+	private static final char LOWER = '`';
 
 	public static void main(String[] args) throws IOException {
 		final int ENCRYPT = 1;
@@ -34,9 +35,7 @@ public class Cipher {
 		System.out.print("Enter output file name: ");
 		String outFileName = inKey.nextLine();
 		System.out.println();
-
-//		inFileName = "input/inputA3.txt";
-//		outFileName = "input/outputA3.txt";
+		
 		Scanner inFile = new Scanner(new File(inFileName));
 		PrintWriter outFile = new PrintWriter(new FileWriter(outFileName));
 
@@ -81,7 +80,15 @@ public class Cipher {
 	 * @param key    the key used to encrypt the String
 	 * @return the encrypted String
 	 */
-	private static String encrypt(String origin, int key) {
+	public static String encrypt(String origin, int key) {
+		// Count the leading and trailing spaces
+		int leadingSpace = 0;
+		int trailingSpace = 0;
+		for (int i = 0; i < origin.length() && origin.charAt(i) == ' '; i++)
+			leadingSpace++;
+		for (int i = origin.length() - 1; i >= 0 && origin.charAt(i) == ' '; i--)
+			trailingSpace++;
+
 		origin = origin.trim();
 		int len = origin.length();
 
@@ -111,25 +118,47 @@ public class Cipher {
 		temp = e;
 		e = "";
 		for (int i = 0; i < len; i++) {
+			String letter = temp.substring(i, i + 1);
 			// Add a special character before the actual character if it is lower case
-			if (Character.isLowerCase(temp.charAt(i))) {
+			if (letter.compareTo("a") >= 0 && letter.compareTo("z") <= 0)
 				e += LOWER;
+			int index = ORIG.indexOf(letter.toUpperCase());
+			if (index > -1) {
+				// Shift the substitution pattern right
+				int shifted = (index + key) % ORIG.length();
+				e += SUBS.charAt(shifted);
+			} else {
+				e += letter;
 			}
-			char ch = temp.charAt(i);
-			for (int j = 0; j < ORIG.length(); j++) {
-				int shifted = (j + key) % ORIG.length();
-				if (temp.substring(i, i + 1).equalsIgnoreCase(ORIG.substring(j, j + 1))) {
-					ch = SUBS.charAt(shifted);
-					break;
-				}
-			}
-			e += ch;
 		}
+
+		// Add the leading and trailing spaces
+		for (int i = 0; i < leadingSpace; i++)
+			e = ' ' + e;
+		for (int i = 0; i < trailingSpace; i++)
+			e = e + ' ';
 
 		return e.toUpperCase();
 	}
 
-	private static String decrypt(String encrypted, int key) {
+	/**
+	 * Returns an decrypted String, following the inverted steps of encryption. The encrypted argument must contain more
+	 * than 4 characters. The key argument is an integer which indicates how many positions the substitution pattern
+	 * shifts right.
+	 *
+	 * @param encrypted a String to be decrypted
+	 * @param key       the key used to decrypt the String
+	 * @return the decrypted String
+	 */
+	public static String decrypt(String encrypted, int key) {
+		// Count the leading and trailing spaces
+		int leadingSpace = 0;
+		int trailingSpace = 0;
+		for (int i = 0; i < encrypted.length() && encrypted.charAt(i) == ' '; i++)
+			leadingSpace++;
+		for (int i = encrypted.length() - 1; i >= 0 && encrypted.charAt(i) == ' '; i--)
+			trailingSpace++;
+
 		encrypted = encrypted.trim().toUpperCase();
 		int len = encrypted.length();
 		String d = "";
@@ -179,6 +208,12 @@ public class Cipher {
 
 		// Step 4: move the first half of the string to be the last half
 		d = d.substring(len / 2) + d.substring(0, len / 2);
+
+		// Add the leading and trailing spaces
+		for (int i = 0; i < leadingSpace; i++)
+			d = ' ' + d;
+		for (int i = 0; i < trailingSpace; i++)
+			d = d + ' ';
 
 		return d;
 	}
